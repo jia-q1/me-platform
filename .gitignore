@@ -1,0 +1,22 @@
+# Dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Environment files and secrets: never commit these
+.env
+.env.*
+!.env.example
+
+# Real data: keep it out of git. Only mock data under src/data/ belongs in the repo.
+/data/
+*.xlsx
+*.xls
+*.csv
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.log
