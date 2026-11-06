@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router';
+import { Link, Navigate, useParams } from 'react-router';
 import { getOutput, getProject, listCountries } from '../data/api';
 import { useData } from '../data/useData';
 import { IndicatorCard } from '../components/IndicatorCard';
@@ -21,6 +21,9 @@ export function ProjectOutputPage({ tab }: { tab: Tab }) {
       <Loaded state={data} notFound="output">
         {({ project, output, countries }) => {
           const base = `/projects/${project.id}/outputs/${output.id}`;
+          // Only Output 1 (Community infrastructure) has a type-of-infrastructure breakdown.
+          const hasInfrastructureTab = output.number === 1;
+          if (tab === 'infrastructure' && !hasInfrastructureTab) return <Navigate to={base} replace />;
           return (
             <>
               <PageHeader
@@ -37,7 +40,7 @@ export function ProjectOutputPage({ tab }: { tab: Tab }) {
               <TabLinks
                 tabs={[
                   { to: base, label: 'KPIs', end: true },
-                  { to: `${base}/infrastructure`, label: 'Type of infrastructure' },
+                  ...(hasInfrastructureTab ? [{ to: `${base}/infrastructure`, label: 'Type of infrastructure' }] : []),
                   { to: `${base}/countries`, label: 'By country' },
                 ]}
               />
@@ -55,7 +58,7 @@ export function ProjectOutputPage({ tab }: { tab: Tab }) {
 
               {tab === 'infrastructure' &&
                 (output.infrastructure.length === 0 ? (
-                  <Empty>This output has no infrastructure component.</Empty>
+                  <Empty>No infrastructure breakdown reported yet.</Empty>
                 ) : (
                   <div className="table-wrap">
                     <table className="table">

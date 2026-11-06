@@ -9,10 +9,9 @@ import { Note, Panel, ProgressBar, RiskBadge, StatTile, StatusBadge } from './ui
 
 export function DemographicsPanel({ data }: { data: Demographics }) {
   const rows: [string, number | null][] = [
-    ['Women and girls', data.women],
-    ['Youth (15–24)', data.youth],
-    ['Displaced or returnees', data.displaced],
-    ['Persons with disabilities', data.disability],
+    ['Female', data.women],
+    ['Male', data.men],
+    ['Youth', data.youth],
   ];
   return (
     <Panel title="Demographics" aside={<span>People reached: <strong>{num(data.total)}</strong></span>}>

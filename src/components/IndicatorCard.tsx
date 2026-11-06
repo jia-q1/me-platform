@@ -44,15 +44,27 @@ export function IndicatorCard({ indicator: i, showDisaggregation = false, showTr
           </div>
         )}
       </div>
-      {showDisaggregation && (
+      {i.beneficiarySplit !== 'none' && (
+        <dl className="disagg">
+          <div>
+            <dt>{i.beneficiarySplit === 'direct-only' ? 'Direct only' : 'Direct'}</dt>
+            <dd>{num(i.direct)}</dd>
+          </div>
+          {i.beneficiarySplit === 'direct-indirect' && (
+            <div>
+              <dt>Indirect</dt>
+              <dd>{num(i.indirect)}</dd>
+            </div>
+          )}
+        </dl>
+      )}
+      {showDisaggregation && i.disaggregation && (
         <dl className="disagg">
           {(
             [
-              ['Women', i.disaggregation.women],
-              ['Men', i.disaggregation.men],
+              ['Female', i.disaggregation.women],
+              ['Male', i.disaggregation.men],
               ['Youth', i.disaggregation.youth],
-              ['Displaced', i.disaggregation.displaced],
-              ['With disability', i.disaggregation.disability],
             ] as const
           ).map(([label, v]) => (
             <div key={label}>

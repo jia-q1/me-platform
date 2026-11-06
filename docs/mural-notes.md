@@ -66,6 +66,31 @@ Every "M&E by …" frame has a **dropdown, a search box and an on/off toggle** i
 - **Analysis, Impact Dashboard area:** "We could also add a funding coverage gap"
 - Orange notes on output 2/3 and REVIVE 2/Humanitarian rows are blank (same action as the labelled one).
 
-### Notes cut off at the edge of the PDF export (unreadable; ask the owner)
-- **Landing page, beside the Analytics tile:** begins "Sugg… Anal… not a… in t…"
-- **M&E by project, beside output 1:** begins "We have… level…"
+### Notes on the HTML prototype screens (from owner screenshots, not in the PDF)
+- **Landing page, on the Analytics tile:** "Suggest to make Analytics a layer not a fourth view in the landing page."
+- **Funding sources list, by the "Report due" filter:** "Rather than report due, it could be report availability by year"
+- **Funding source page (Republic of Korea), top of page:** "It would be good to list the projects that donor supports that would take us to the project"
+- **Project page, on the quarterly chart:** same world map note as above
+- **Country page, on Demographics:** same female, male and youth note as above
+- **Analytics page, top of page:** same funding coverage gap note as above
+- **Output page:** the same three KPI lists as above. The sticky spells the last Output 1 KPI "Areas of UXO harzaros areas cleared", probably meaning "hazardous"; this file and the app say "hazards". Wording to be confirmed.
+
+### More notes from owner screenshots of the Mural board
+- **M&E by project, beside output 1:** "We do not have output level targets" (this is the note that was cut off in the PDF, which showed only "We have… level…")
+- **M&E by project, orange note with an arrow to the main map area:** "World map indicating participating project countries"
+
+### Planning board (not in the PDF)
+The owner describes these notes as thinking from the planning stage: useful background, not fixed requirements.
+
+- **Users:** Senior management CB/CO; C3RT; CO staff linked to projects
+- **Purpose:**
+  - "Track results against global framework targets by country, output and activity, with consistent disaggregation."
+  - "Reduce reporting burden by generating quarterly and final report content directly from validated data."
+  - "Link results to resources by tracking budget and expenditure by country, output and pillar, including the USD 10 million set-aside."
+  - SM to consult country status
+  - Analytics and linkage with ID
+- **Constraints:** sharepoint; Lack of data input from CO; Use info from Quantum
+- **Licenses and software:** Power BI; HTML on sharepoint
+- **Content:** Results tracker per indicator; Monitoring progress; Trends and gap; Geospatial view; Risk registry; Map with countries; Link to ID for analysis; "Financal?" (with a question mark on the board)
+
+"ID" probably means Impact Dashboard. To be confirmed.

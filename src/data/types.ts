@@ -40,15 +40,24 @@ export interface Money {
   expenditure: number | null;
 }
 
-/** People reached, broken down the way the global framework asks for. */
+/**
+ * People reached. Only female, male and youth are measured at the moment (Mural note).
+ * Youth overlaps with female and male, so the three don't add up to the total.
+ */
 export interface Demographics {
   total: number | null;
   women: number | null;
   men: number | null;
   youth: number | null;
-  displaced: number | null;
-  disability: number | null;
 }
+
+/**
+ * How a KPI counts beneficiaries:
+ * - 'direct-indirect': people, reported as direct and indirect
+ * - 'direct-only': people, direct only (indirect is not counted, as opposed to missing)
+ * - 'none': not a count of people (e.g. volume of debris cleared)
+ */
+export type BeneficiarySplit = 'direct-indirect' | 'direct-only' | 'none';
 
 export interface Site {
   id: Id;
@@ -82,7 +91,12 @@ export interface Indicator {
   achieved: number | null;
   status: ResultStatus;
   validation: ValidationStatus;
-  disaggregation: Demographics;
+  beneficiarySplit: BeneficiarySplit;
+  /** Parts of `achieved`. Both stay null when beneficiarySplit is 'none'. */
+  direct: number | null;
+  indirect: number | null;
+  /** Null for KPIs that don't count people. */
+  disaggregation: Demographics | null;
   /** Cumulative achieved value per quarter, oldest first. */
   trend: (number | null)[];
 }
@@ -112,6 +126,7 @@ export interface OutputCountryResult {
 export interface Output {
   id: Id;
   projectId: Id;
+  /** 1 = Community infrastructure, 2 = Local economies and livelihoods, 3 = Local capacities for early recovery. */
   number: number;
   title: string;
   pillar: string;
