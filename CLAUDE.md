@@ -13,7 +13,7 @@ A web platform for the **UNDP Crisis Bureau** to track results, resources and ri
 - `docs/design/prototype.html`: a clickable HTML prototype built from the Mural, UNDP-branded, placeholder values. The current React app follows it, **but the prototype has known errors versus the Mural** (see below).
 
 ## Stack and commands
-React 19 + TypeScript + Vite + React Router 7. No chart or map library yet: charts are plain SVG (`src/components/charts.tsx`), the map is a placeholder grid (`src/components/MapPanel.tsx`).
+React 19 + TypeScript + Vite + React Router 7. Charts are plain SVG (`src/components/charts.tsx`). The map uses Leaflet with an OpenStreetMap basemap (`src/components/MapPanel.tsx`). Pages only pass points to `MapPanel`, so the basemap or library can change in that one file. OpenStreetMap borders are not the UN's official ones: agree the basemap with UNDP before launch.
 
 ```
 npm install      # once
@@ -58,7 +58,7 @@ npm run build    # typecheck + production build
 - **Pillar vs output:** the purpose note tracks spending "by country, output and pillar", so pillars are probably a separate thing from outputs. The real pillars aren't known. The sample data reuses the output names as pillars, which is why "Expenditure by pillar" and "Expenditure by output" on the donor page show the same figures. Keep both charts until this is answered.
 
 ## Other to-dos
-Real map (Leaflet/MapLibre + Impact Dashboard / Earth Engine layer, keeping `MapPanel`'s props); the Period selector doesn't filter data yet; "Generate report draft" buttons are stubs; RAPIDA/Impact Dashboard URLs; risk registry; trends and gaps.
+Impact Dashboard / Earth Engine layer on the map; approved basemap (UN boundaries); the Period selector doesn't filter data yet; "Generate report draft" buttons are stubs; RAPIDA/Impact Dashboard URLs; risk registry; trends and gaps.
 
 ## Hosting (not urgent)
 Code lives in this private GitHub repo for now. When the site needs sharing: the easiest option is **Cloudflare Pages + Cloudflare Access** (email one-time code limited to `@undp.org`, free up to 50 users). The more official option is **Azure Static Web Apps + UNDP Microsoft (Entra ID) sign-in**, which needs the Standard plan and UNDP IT to register the app. Before putting real Quantum figures on a host outside UNDP, check with UNDP IT. Nothing in the code depends on this choice.
