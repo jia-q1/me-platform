@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "data": "python pipeline/run.py"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

@@ -1,0 +1,66 @@
+# Every way a country office is written in the trackers, mapped to one name.
+#
+# When the report says "row not recognised" because a country is spelled a new way,
+# add that spelling to `aliases` here and run the pipeline again. Never fix the Excel
+# file itself: the same spelling will come back in next month's version.
+#
+# iso3 is the standard 3-letter country code, used later for the map.
+
+[countries."Afghanistan"]
+iso3 = "AFG"
+aliases = ["AFG", "Aghanistan"]
+
+[countries."DRC"]
+iso3 = "COD"
+aliases = ["Democratic Republic of the Congo"]
+
+[countries."Iraq"]
+iso3 = "IRQ"
+aliases = []
+
+[countries."Lebanon"]
+iso3 = "LBN"
+aliases = []
+
+[countries."Libya"]
+iso3 = "LBY"
+aliases = []
+
+[countries."Myanmar"]
+iso3 = "MMR"
+aliases = ["MYA"]
+
+# PAPP = UNDP Programme of Assistance to the Palestinian People
+[countries."PAPP (Gaza)"]
+iso3 = "PSE"
+aliases = ["PAPP-Gaza", "PAPP", "Gaza"]
+
+[countries."Somalia"]
+iso3 = "SOM"
+aliases = []
+
+[countries."South Sudan"]
+iso3 = "SSD"
+aliases = ["SSD"]
+
+[countries."Sudan"]
+iso3 = "SDN"
+aliases = ["SUD"]
+
+# Kept separate from Sudan for now because REVIVE 2 reports it on its own rows.
+# Still to confirm: is this a separate site or part of the Sudan country office?
+[countries."Sudan (El Obeid)"]
+iso3 = "SDN"
+aliases = ["SUD (ELOBEID)"]
+
+[countries."Syria"]
+iso3 = "SYR"
+aliases = ["SYA"]
+
+[countries."Ukraine"]
+iso3 = "UKR"
+aliases = ["UKR"]
+
+[countries."Yemen"]
+iso3 = "YEM"
+aliases = []

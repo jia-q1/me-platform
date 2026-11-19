@@ -7,6 +7,18 @@ A web platform for the **UNDP Crisis Bureau** to track results, resources and ri
 - **Data:** a pipeline will feed the app automatically. The real data isn't known in detail yet, so the plan is **front end first with sample data, then connect data as it comes in.** Expected sources: **Quantum** (UNDP ERP: budget/expenditure, project and output IDs), **country office (CO) results submissions**, and a **master Excel** (the Mural says progress charts pull from it).
 - **Owner:** not a professional developer. Explain things plainly and say what to run.
 
+## Real data (arrived Nov 2026)
+Results come from three Excel tracker workbooks, one per project, all built on the same template. They're kept in `data/raw/` (gitignored, never commit):
+- **REVIVE 1**: June 2025 – June 2026 (file "Master Monitoring – Progress tracking for all 6 COs")
+- **REVIVE 2**: July 2026 – July 2027 (donor: ROK)
+- **JSB Global Project**: April 2026 – April 2027
+
+`npm run data` runs `pipeline/` (Python + openpyxl). It writes `data/out/tidy.csv` (one row per figure, with its source cell) and `data/out/report.md`. See `pipeline/README.md`. Owner decisions so far:
+- **Targets come from the "Master Results Tracker" sheet.** Ignore the "Chapeau Results" revised targets.
+- Monthly results come from **country rows only**. The sheets' project-level result rows and Total columns have formula errors.
+
+The workbooks hold **results only**: no budget, expenditure, risks or funding data. Each project has its **own outputs and KPIs**, with two levels: the project indicator, and each CO's own indicator under it. Direct and indirect targets are set separately. The app's data model (`types.ts`, the shared `FRAMEWORK` in `mock.ts`) doesn't reflect this yet, and the tidy table isn't connected to the app yet.
+
 ## Design sources (read these before changing screens)
 - `docs/design/mural-board.pdf`: the original wireframes, 13 frames
 - `docs/mural-notes.md`: **every sticky note transcribed**, including the real KPI lists per output. The notes are small in the PDF; use this file. The owner says many notes were thinking from the planning stage: keep them in mind, but they aren't strict requirements.

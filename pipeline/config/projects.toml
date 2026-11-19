@@ -1,0 +1,37 @@
+# One entry per project tracker workbook.
+#
+#   file         The workbook's file name. A * matches anything, so the name can change a
+#                little (e.g. "v2" added at the end) without editing this file.
+#   sheet        The sheet to read. Targets and results are taken from here.
+#   first_month  The month of the first month column in the sheet, as YEAR-MONTH.
+#                The sheet itself only says "April", "May"..., so this is how the
+#                pipeline knows the years.
+#   uncoded_rows What a row in column B means when it has no country name and no number
+#                code in front of it:
+#                  "indicator" = a project-level indicator (JSB writes them like this)
+#                  "breakdown" = a sub-row of the country indicator above it, such as an
+#                                infrastructure type or a district (REVIVE 1 and 2)
+
+[[project]]
+id = "jsb"
+name = "JSB Global Project"
+file = "JSB Global Project Master Monitoring*.xlsx"
+sheet = "Master Results Tracker"
+first_month = "2026-04"   # April 2026 to April 2027
+uncoded_rows = "indicator"
+
+[[project]]
+id = "revive-1"
+name = "REVIVE 1"
+file = "Master Monitoring - Progress tracking*.xlsx"
+sheet = "Master Results Tracker"
+first_month = "2025-06"   # June 2025 to June 2026
+uncoded_rows = "breakdown"
+
+[[project]]
+id = "revive-2"
+name = "REVIVE 2"
+file = "(REVIVE 2) Master Monitoring*.xlsx"
+sheet = "Master Results Tracker"
+first_month = "2026-07"   # July 2026 to July 2027
+uncoded_rows = "breakdown"
