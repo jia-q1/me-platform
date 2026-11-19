@@ -85,24 +85,33 @@ def parse_value(raw):
 
 
 class Countries:
-    """Recognises a country name (or any alias) at the start of a label."""
+    """Recognises a country name (or any alias) at the start of a label.
+
+    Additional-funding labels such as "Sudan (El Obeid)" resolve to their country,
+    with the label kept as the funding tranche.
+    """
 
     def __init__(self, config: dict):
         self.iso3 = {}
-        pairs = []
-        for name, info in config.items():
+        pairs = []  # (alias, country, funding label or None)
+        for name, info in config.get("countries", {}).items():
             self.iso3[name] = info.get("iso3")
             for alias in [name, *info.get("aliases", [])]:
-                pairs.append((alias.lower(), name))
-        # Longest first, so "South Sudan" wins over "Sudan".
+                pairs.append((alias.lower(), name, None))
+        for label, info in config.get("additional_funding", {}).items():
+            for alias in [label, *info.get("aliases", [])]:
+                pairs.append((alias.lower(), info["country"], label))
+        # Longest first, so "South Sudan" wins over "Sudan", and
+        # "Sudan (El Obeid)" wins over "Sudan".
         self._pairs = sorted(pairs, key=lambda p: -len(p[0]))
 
-    def match_prefix(self, text: str) -> tuple[str | None, str]:
+    def match_prefix(self, text: str) -> tuple[str | None, str | None, str]:
+        """Returns (country, funding label, rest of the text)."""
         low = text.lower()
-        for alias, name in self._pairs:
+        for alias, name, funding in self._pairs:
             if low.startswith(alias):
                 rest = text[len(alias):]
                 if rest and rest[0].isalnum():  # "Iraqi..." is not "Iraq"
                     continue
-                return name, rest
-        return None, text
+                return name, funding, rest
+        return None, None, text

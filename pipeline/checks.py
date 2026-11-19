@@ -11,11 +11,13 @@ def run_checks(rows: list[dict]) -> list[Issue]:
     issues: list[Issue] = []
 
     # Index the figures we need.
-    targets = {}                    # (project, output, code, country, co_code, breakdown, measure) -> value
-    results = defaultdict(float)    # (project, output, code, country, co_code) -> total direct + indirect
+    # An indicator row is identified by (project, output, code, country, funding, co_code).
+    targets = {}                    # indicator row + (breakdown, measure) -> value
+    results = defaultdict(float)    # indicator row -> total direct + indirect
     sources = {}
     for r in rows:
-        key = (r["project"], r["output"], r["indicator_code"], r["country"], r["co_indicator_code"])
+        key = (r["project"], r["output"], r["indicator_code"], r["country"], r["funding"],
+               r["co_indicator_code"])
         if r["measure"].startswith("target") and r["value"] is not None:
             targets[key + (r["breakdown"], r["measure"])] = r["value"]
             sources[key + (r["breakdown"], r["measure"])] = r["source"]
@@ -25,23 +27,23 @@ def run_checks(rows: list[dict]) -> list[Issue]:
     # 1. Results reported against an indicator that has no target.
     for key, total in results.items():
         if not any(targets.get(key + ("total", m)) for m in ("target_direct", "target_indirect")):
-            project, _, code, country, co_code = key
-            who = f"{country} {co_code or ''}".strip() if country else f"project indicator {code}"
+            project, _, code, country, funding, co_code = key
+            who = f"{funding or country} {co_code or ''}".strip() if country else f"project indicator {code}"
             issues.append(Issue("warning", project, who,
                                 f"Results reported ({fmt(total)}) but no target, or a target of 0."))
 
     # 2. A project-level target should equal the sum of its countries' targets.
     country_sum = defaultdict(float)
     has_country = set()
-    for (project, output, code, country, co_code, breakdown, measure), v in targets.items():
+    for (project, output, code, country, _, _, breakdown, measure), v in targets.items():
         if country and code and breakdown == "total":
             country_sum[(project, output, code, measure)] += v
             has_country.add((project, output, code, measure))
-    for (project, output, code, country, co_code, breakdown, measure), v in targets.items():
+    for (project, output, code, country, _, _, breakdown, measure), v in targets.items():
         k = (project, output, code, measure)
         if country is None and breakdown == "total" and k in has_country:
             if abs(v - country_sum[k]) > 0.5:
-                issues.append(Issue("warning", project, sources[(project, output, code, None, None, "total", measure)],
+                issues.append(Issue("warning", project, sources[(project, output, code, None, None, None, "total", measure)],
                                     f"Project target {fmt(v)} for indicator {code} ({measure.replace('_', ' ')}) "
                                     f"is not the sum of the country targets ({fmt(country_sum[k])})."))
 

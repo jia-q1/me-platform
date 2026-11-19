@@ -33,6 +33,7 @@ Change the settings instead:
 | "Expected the month … here" | Check `first_month` for that project in `config/projects.toml` |
 | A file wasn't found | Check the `file` name pattern in `config/projects.toml` |
 | A new project | Add a `[[project]]` block to `config/projects.toml` |
+| "appears twice under the same indicator" (usually new additional funding, e.g. for Syria or PAPP-Gaza) | Add the label used in the tracker to `[additional_funding]` in `config/countries.toml` |
 
 Wrong figures (a total that doesn't add up, results without a target) need fixing at the
 source, by the country office.
@@ -47,6 +48,7 @@ One row per figure.
 | level | `project` = the project-wide indicator, `country` = a country office's own indicator |
 | indicator_code, indicator | The project-wide indicator. A code ending in `*` was made up by the pipeline because the sheet has none |
 | country, co_indicator_code, co_indicator | The country office and its own wording of the indicator (blank if it uses the project wording) |
+| funding | Blank for the original funding. For additional funding reported on its own rows, its label (e.g. `Sudan (El Obeid)`). It is still counted under the country |
 | breakdown | `total`, `female`, `male`, `youth`, or another label (a district, an infrastructure type) |
 | measure | `baseline`, `target_direct`, `target_indirect`, `direct`, `indirect` |
 | month | YEAR-MONTH for results, blank for baselines and targets |
@@ -59,6 +61,9 @@ Rules applied:
   sheet's own project-level result rows or its Total column, because some of their
   formulas point at the wrong cells. The platform adds up the country figures itself.
 - Figures in months that haven't happened yet are ignored. The report lists them if they're not zero.
+- A 0 in a past month means nothing was achieved that month. It is a real zero, not missing data.
+- Additional funding (e.g. Sudan (El Obeid)) is reported under its country, with the
+  label kept in the `funding` column.
 
 ## Files
 

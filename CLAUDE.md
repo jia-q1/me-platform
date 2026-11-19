@@ -16,6 +16,8 @@ Results come from three Excel tracker workbooks, one per project, all built on t
 `npm run data` runs `pipeline/` (Python + openpyxl). It writes `data/out/tidy.csv` (one row per figure, with its source cell) and `data/out/report.md`. See `pipeline/README.md`. Owner decisions so far:
 - **Targets come from the "Master Results Tracker" sheet.** Ignore the "Chapeau Results" revised targets.
 - Monthly results come from **country rows only**. The sheets' project-level result rows and Total columns have formula errors.
+- A 0 in a past month means "not yet achieved". Treat it as a real zero.
+- **Additional funding is reported under one country.** "Sudan (El Obeid)" is extra funding for Sudan, not a separate country. Syria and PAPP-Gaza will get additional funding too. Labels are listed under `[additional_funding]` in `pipeline/config/countries.toml`, and the tidy table keeps them in a `funding` column.
 
 The workbooks hold **results only**: no budget, expenditure, risks or funding data. Each project has its **own outputs and KPIs**, with two levels: the project indicator, and each CO's own indicator under it. Direct and indirect targets are set separately. The app's data model (`types.ts`, the shared `FRAMEWORK` in `mock.ts`) doesn't reflect this yet, and the tidy table isn't connected to the app yet.
 

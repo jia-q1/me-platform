@@ -43,7 +43,7 @@ from cleaning import (
 
 COLUMNS = [
     "project", "output_no", "output", "level", "indicator_code", "indicator",
-    "country", "co_indicator_code", "co_indicator", "breakdown",
+    "country", "funding", "co_indicator_code", "co_indicator", "breakdown",
     "measure", "month", "value", "text_value", "source",
 ]
 
@@ -65,6 +65,7 @@ class Indicator:
     country: str | None = None
     co_code: str | None = None
     co_title: str | None = None
+    funding: str | None = None  # additional-funding label, e.g. "Sudan (El Obeid)"
 
 
 def month_label(first_month: str, offset: int) -> str:
@@ -128,6 +129,7 @@ def read_tracker(path, project: dict, countries: Countries, today: date):
     project_ind: Indicator | None = None  # the current project-level indicator
     current: Indicator | None = None      # the indicator the next breakdown rows belong to
     seq = 0                               # numbers uncoded project indicators
+    seen: dict[tuple, int] = {}           # country rows already read, to spot repeats
 
     for r in range(4, ws.max_row + 1):
         a = ws.cell(r, 1).value
@@ -147,7 +149,7 @@ def read_tracker(path, project: dict, countries: Countries, today: date):
         text = tidy_text(b)
 
         breakdown = "total"
-        country, rest = countries.match_prefix(text)
+        country, funding, rest = countries.match_prefix(text)
         if DEMOGRAPHIC.match(text):
             if current is None:
                 issue("warning", f"B{r}", f"{text!r} is not under any indicator. Row skipped.")
@@ -164,9 +166,18 @@ def read_tracker(path, project: dict, countries: Countries, today: date):
                 "country",
                 project_ind.code if project_ind else None,
                 project_ind.title if project_ind else None,
-                country, code, title or None,
+                country, code, title or None, funding,
             )
             ind = current
+            # The same country twice under one indicator usually means a new
+            # additional-funding label that countries.toml doesn't know yet.
+            key = (output, current.code, country, code, (title or "").lower(), funding)
+            if key in seen:
+                issue("warning", f"B{r}",
+                      f"{country} appears twice under the same indicator (also row {seen[key]}). "
+                      f"If this is additional funding, add its label to [additional_funding] "
+                      f"in pipeline/config/countries.toml.")
+            seen[key] = r
         elif starts_with_code(text) or project["uncoded_rows"] == "indicator":
             code, title = split_code(text)
             if code is None:
@@ -184,6 +195,7 @@ def read_tracker(path, project: dict, countries: Countries, today: date):
         base = {
             "project": name, "output_no": output_no, "output": output, "level": ind.level,
             "indicator_code": ind.code, "indicator": ind.title, "country": ind.country,
+            "funding": ind.funding,
             "co_indicator_code": ind.co_code, "co_indicator": ind.co_title, "breakdown": breakdown,
         }
 

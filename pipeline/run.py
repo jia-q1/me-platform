@@ -34,7 +34,7 @@ def pick_raw_folder() -> Path:
 def main(only: list[str]) -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     projects = tomllib.loads((CONFIG / "projects.toml").read_text("utf-8"))["project"]
-    countries = Countries(tomllib.loads((CONFIG / "countries.toml").read_text("utf-8"))["countries"])
+    countries = Countries(tomllib.loads((CONFIG / "countries.toml").read_text("utf-8")))
     if only:
         projects = [p for p in projects if p["id"] in only]
     folder = pick_raw_folder()

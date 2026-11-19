@@ -47,12 +47,6 @@ aliases = ["SSD"]
 iso3 = "SDN"
 aliases = ["SUD"]
 
-# Kept separate from Sudan for now because REVIVE 2 reports it on its own rows.
-# Still to confirm: is this a separate site or part of the Sudan country office?
-[countries."Sudan (El Obeid)"]
-iso3 = "SDN"
-aliases = ["SUD (ELOBEID)"]
-
 [countries."Syria"]
 iso3 = "SYR"
 aliases = ["SYA"]
@@ -64,3 +58,17 @@ aliases = ["UKR"]
 [countries."Yemen"]
 iso3 = "YEM"
 aliases = []
+
+
+# ---- Additional funding ---------------------------------------------------------
+# Some country offices get extra funding that the trackers report on separate rows,
+# e.g. "Sudan (El Obeid)". It belongs to the same country, so the pipeline counts it
+# under that country and puts the label in the `funding` column of the tidy table.
+#
+# Syria and PAPP-Gaza will get additional funding too. When their rows appear, the
+# report will warn that the country appears twice under one indicator. Add an entry
+# here with the exact label used in the tracker, then run the pipeline again.
+
+[additional_funding."Sudan (El Obeid)"]
+country = "Sudan"
+aliases = ["SUD (ELOBEID)"]
